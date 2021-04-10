@@ -3,4 +3,6 @@
     <string name="location_hunt_title">Location Hunt</string>
     <string name="login_text">Login</string>
     <string name="create_account_text">Create Account</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
 </resources>

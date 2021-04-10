@@ -6,16 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class HomeActivity extends AppCompatActivity {
+public class InitialStreetViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_initial_street_view);
     }
 
-    public void startAHunt(View view) {
-        Intent intent = new Intent(this, InitialStreetViewActivity.class);
+    public void startHunt(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
     }
 }

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "444965018655",
+    "firebase_url": "https://locationhunt-aa615-default-rtdb.firebaseio.com",
     "project_id": "locationhunt-aa615",
     "storage_bucket": "locationhunt-aa615.appspot.com"
   },

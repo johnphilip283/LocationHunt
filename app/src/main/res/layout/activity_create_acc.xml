@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.22000003" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/create_account_username_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints=""
@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.13" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
+        android:id="@+id/create_account_password_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autofillHints=""
@@ -48,7 +48,7 @@
         app:layout_constraintVertical_bias="0.25" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/create_account_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="createAccount"

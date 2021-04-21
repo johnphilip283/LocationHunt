@@ -9,4 +9,5 @@
     <string name="start_hunt_text">Start Hunt</string>
     <string name="new_location_text">New Location</string>
     <string name="reset_location">Reset Location</string>
+    <string name="username">Username</string>
 </resources>

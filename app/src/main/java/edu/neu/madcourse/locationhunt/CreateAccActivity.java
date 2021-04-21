@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 import edu.neu.madcourse.locationhunt.models.User;
 
@@ -40,8 +39,8 @@ public class CreateAccActivity extends AppCompatActivity {
 
     public void createAccount(View view) {
 
-        String passwordTxt = newPassword.getText().toString();
-        String usernameTxt = newUsername.getText().toString();
+        String passwordTxt = newPassword.getText().toString().trim();
+        String usernameTxt = newUsername.getText().toString().trim();
 
         if (usernameTxt.equals("") || passwordTxt.equals("")) {
             Toast.makeText(getApplicationContext(), "Need to provide a valid username and password.", Toast.LENGTH_SHORT).show();

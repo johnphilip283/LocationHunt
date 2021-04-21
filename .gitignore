@@ -11,6 +11,7 @@
 *.class
 
 .idea/*
+.DS_Store
 
 # Generated files
 bin/

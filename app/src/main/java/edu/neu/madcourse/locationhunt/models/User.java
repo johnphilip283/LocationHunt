@@ -2,6 +2,9 @@ package edu.neu.madcourse.locationhunt.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Arrays;
+import java.util.Base64;
+
 @IgnoreExtraProperties
 public class User {
 

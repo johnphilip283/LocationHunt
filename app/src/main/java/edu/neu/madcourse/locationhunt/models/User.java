@@ -2,8 +2,10 @@ package edu.neu.madcourse.locationhunt.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 @IgnoreExtraProperties
 public class User {
@@ -11,6 +13,7 @@ public class User {
     public String username;
     public String clientToken;
     public String password;
+    public List<Hunt> hunts;
 
     public User() {
 
@@ -20,7 +23,10 @@ public class User {
         this.username = username;
         this.password = password;
         this.clientToken = clientToken;
+        this.hunts = new ArrayList<>();
     }
+
+    public List<Hunt> getHunts() { return hunts; }
 
     public String getUsername() {
         return this.username;
@@ -33,6 +39,8 @@ public class User {
     public String getClientToken() {
         return clientToken;
     }
+
+    public void setHunts(List<Hunt> hunts) { this.hunts = hunts; }
 
     public void setPassword(String password) {
         this.password = password;

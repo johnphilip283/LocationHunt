@@ -4,22 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
+    private TextView greeting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        greeting = findViewById(R.id.greeting);
+        SharedPreferences sharedPref = this.getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String username = sharedPref.getString("Username", "friend");
+        greeting.setText(getString(R.string.greeting, username));
     }
 
     public void startAHunt(View view) {

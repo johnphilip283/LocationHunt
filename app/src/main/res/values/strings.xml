@@ -10,4 +10,5 @@
     <string name="new_location_text">New Location</string>
     <string name="reset_location">Reset Location</string>
     <string name="username">Username</string>
+    <string name="greeting">Hello, %1$s!</string>
 </resources>

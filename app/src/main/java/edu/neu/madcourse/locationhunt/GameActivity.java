@@ -11,6 +11,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback {
+
     MapView mapView;
 
     @Override

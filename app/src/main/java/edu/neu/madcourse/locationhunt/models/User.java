@@ -1,5 +1,7 @@
 package edu.neu.madcourse.locationhunt.models;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -54,4 +56,18 @@ public class User {
         this.clientToken = clientToken;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Username: " + username);
+        sb.append("Password: " + password);
+        sb.append("Client token: " + clientToken);
+        sb.append("Hunts: \n");
+        for (Hunt hunt: hunts) {
+            sb.append(hunt.toString());
+        }
+
+        return sb.toString();
+    }
 }

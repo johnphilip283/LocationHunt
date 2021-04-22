@@ -1,13 +1,12 @@
 package edu.neu.madcourse.locationhunt.models;
 
-import android.location.Location;
+import androidx.annotation.NonNull;
 
 public class Hunt {
 
     public long startTimestamp;
     public long duration;
-    public String destination;
-    public Location destinationLocation;
+    public HuntLocation destination;
 
     public Hunt() {
 
@@ -21,15 +20,11 @@ public class Hunt {
         return startTimestamp;
     }
 
-    public String getDestination() {
+    public HuntLocation getDestination() {
         return destination;
     }
 
-    public Location getDestinationLocation() { return destinationLocation; }
-
-    public void setDestinationLocation(Location destinationLocation) { this.destinationLocation = destinationLocation; }
-
-    public void setDestination(String destination) {
+    public void setDestination(HuntLocation destination) {
         this.destination = destination;
     }
 
@@ -39,5 +34,17 @@ public class Hunt {
 
     public void setStartTimestamp(long startTimestamp) {
         this.startTimestamp = startTimestamp;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("timestamp: " + startTimestamp);
+        sb.append("duration: " + duration);
+        sb.append("hunt location: " + destination.toString());
+
+        return sb.toString();
     }
 }

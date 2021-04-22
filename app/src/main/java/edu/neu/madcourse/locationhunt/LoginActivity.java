@@ -58,9 +58,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
+                    Log.e("Firebase", "Error getting data", task.getException());
                 } else {
+
                     User requestedUser = task.getResult().getValue(User.class);
+
                     if (requestedUser.getPassword().equals(passwordTxt)) {
                         SharedPreferences sharedPref = LoginActivity.this.getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();

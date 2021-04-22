@@ -7,7 +7,7 @@
     tools:context=".InitialStreetViewActivity">
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/start_hunt_confirm_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="startHunt"
@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.95" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/reset_location_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset_location"
@@ -30,4 +30,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
+
+    <SeekBar
+        android:id="@+id/distance_seek_bar"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="395dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="36dp"
+        android:max="20"
+        android:min="0"
+        android:progress="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/distance_filter_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/distance_filter_text"
+        app:layout_constraintBottom_toTopOf="@+id/distance_seek_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

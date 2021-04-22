@@ -1,0 +1,23 @@
+[
+  {
+    "The Cheesecake Factory": {
+      "distance": 10560,
+      "hint": "This iconic restaurant is located at the entrance of the Prudential Center.",
+      "name": "The Cheesecake Factory"
+    }
+  },
+  {
+    "Chilacates": {
+      "distance": 5280,
+      "hint": "This restaurant opened up on Mission Hill last year.",
+      "name": "Chilacates"
+    }
+  },
+  {
+    "Curry Student Center": {
+      "distance": 6000,
+      "hint": "Place where Northeastern students get together to do work. There's also a Popeye's here.",
+      "name": "Curry Student Center"
+    }
+  }
+]

@@ -11,4 +11,5 @@
     <string name="reset_location">Reset Location</string>
     <string name="username">Username</string>
     <string name="greeting">Hello, %1$s!</string>
+    <string name="distance_filter_text">Maximum distance: %1$s feet away</string>
 </resources>

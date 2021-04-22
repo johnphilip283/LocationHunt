@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:444965018655:android:34e35a58a6a30b7ee2492a",
         "android_client_info": {
-          "package_name": "com.northeastern.LocationHunt"
+          "package_name": "edu.neu.madcourse.locationhunt"
         }
       },
       "oauth_client": [

@@ -14,6 +14,6 @@
     <string name="distance_filter_text">Maximum distance: %1$s miles away</string>
 
     <string name="location_card_hint">Hint: %1$s</string>
-    <string name="location_card_distance">Distance (in miles): %1$f</string>
+    <string name="location_card_distance">Distance: %1$.1f miles</string>
 
 </resources>

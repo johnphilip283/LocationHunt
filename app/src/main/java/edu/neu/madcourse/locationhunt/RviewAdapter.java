@@ -42,6 +42,10 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
             Log.e("RviewAdapter", "Current location is null");
         }
 
+        currentLocation = new Location("");
+        currentLocation.setLatitude(42.33035768454704);
+        currentLocation.setLongitude(-71.09758758572562);
+
         // distance in meters -> need to convert to miles within 1 decimal place
         double distanceInMeters = currentLocation.distanceTo(destinationLocation.getLocation());
         float distanceInMiles = (float) Math.round(0.00621371 * distanceInMeters) / 10;

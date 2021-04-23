@@ -79,7 +79,6 @@ public class InitialStreetViewActivity extends AppCompatActivity {
 
                     Location huntLocation = location.getLocation();
                     distance = huntLocation.distanceTo(currentLocation);
-
                     distance = (float) Math.round(0.00621371 * distance) / 10;
 
                     if (distance < progress) {
@@ -100,8 +99,8 @@ public class InitialStreetViewActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
-        });
 
+        });
 
     }
 

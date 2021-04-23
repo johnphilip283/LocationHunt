@@ -16,5 +16,4 @@ public class RviewHolder extends RecyclerView.ViewHolder {
         distance = itemView.findViewById(R.id.location_card_distance);
         hint = itemView.findViewById(R.id.location_card_hint);
     }
-
 }

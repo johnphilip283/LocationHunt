@@ -28,7 +28,7 @@ public class CreateAccActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_acc);
 
-        mDatabase = FirebaseDatabase.getInstance("https://locationhunt-aa615-default-rtdb.firebaseio.com").getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         newPassword = findViewById(R.id.create_account_password_field);
         newUsername = findViewById(R.id.create_account_username_field);
 

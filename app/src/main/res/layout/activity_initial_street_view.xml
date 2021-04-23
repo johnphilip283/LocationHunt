@@ -36,23 +36,24 @@
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="395dp"
         android:layout_height="23dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="48dp"
         android:max="10"
         android:min="0"
         android:progress="10"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/distance_filter_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="236dp"
+        android:layout_height="26dp"
         android:layout_marginBottom="4dp"
         android:text="@string/distance_filter_text"
         app:layout_constraintBottom_toTopOf="@+id/distance_seek_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
+        app:layout_constraintHorizontal_bias="0.091"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView

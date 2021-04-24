@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.os.PersistableBundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -24,10 +27,22 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.text.DecimalFormat;
 
 import edu.neu.madcourse.locationhunt.models.Constants;
+import edu.neu.madcourse.locationhunt.models.Hunt;
+import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -39,19 +54,43 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double destLat;
     private double curLng;
     private double curLat;
+
+    private DatabaseReference huntRef;
+
     private double distFromDest;
     private String destinationName;
     private String hint;
     private TextView distFromDestText;
-    private TextView hintText;
+    private double startTimestamp;
     private GameActivity curGame = this;
     private double oldDist;
     private int tracker = 0;
+
+    List<Hunt> hunts;
+    private TextView hintText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("Username", "");
+        startTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
+        huntRef = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("hunts");
+
+        huntRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    GenericTypeIndicator<List<Hunt>> t = new GenericTypeIndicator<List<Hunt>>() {};
+                    hunts = task.getResult().getValue(t);
+                    if (hunts == null) {
+                        hunts = new ArrayList<>();
+                    }
+                }
+            }
+        });
 
         Intent intent = getIntent();
 
@@ -63,7 +102,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView = findViewById(R.id.mapView);
         distFromDestText = findViewById(R.id.distance_from_dest_text);
         hintText = findViewById(R.id.hint_text);
-        hintText.setText(new StringBuilder().append("Hint: ").append(hint).toString());
+
+        hintText.setText(getString(R.string.info_display, "Hint", hint));
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);
@@ -118,6 +158,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onLowMemory();
     }
 
+
     private void getLocationUpdates(GoogleMap gMap) {
         this.locationRequest = new LocationRequest();
         this.locationRequest.setInterval(20000);
@@ -138,8 +179,19 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         DecimalFormat df = new DecimalFormat("#.##");
                         distFromDestText.setText("Distance from destination (miles):\n" + df.format(distFromDest));
                         if (distFromDest < 0.01) {
-                            Toast.makeText(curGame, "You found the destination!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(curGame, EndGameActivity.class);
+
+                            double endTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
+                            double duration = (endTimestamp - startTimestamp) / 1000;
+
+                            HuntLocation destination = new HuntLocation(hint, destLat, destLng, destinationName);
+
+                            Hunt hunt = new Hunt(startTimestamp, duration, destination);
+                            hunts.add(hunt);
+                            huntRef.setValue(hunts);
+
+                            Toast.makeText(GameActivity.this, "You found the destination!", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(GameActivity.this, EndGameActivity.class);
                             startActivity(intent);
                         }
                         if (tracker == 0) {

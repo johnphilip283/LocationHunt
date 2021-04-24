@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.neu.madcourse.locationhunt.models.Hunt;
@@ -38,22 +39,24 @@ public class PreviousHuntsActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = this.getSharedPreferences("userDetails", Context.MODE_PRIVATE);
 
         String username = sharedPreferences.getString("Username", "");
-
+        prevHunts = new ArrayList<>();
         userHuntsDb = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("hunts");
 
-        userHuntsDb.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                GenericTypeIndicator<List<Hunt>> t = new GenericTypeIndicator<List<Hunt>>() {};
-                prevHunts = snapshot.getValue(t);
-                createRecyclerView();
-            }
+        if (userHuntsDb != null) {
+            userHuntsDb.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    GenericTypeIndicator<List<Hunt>> t = new GenericTypeIndicator<List<Hunt>>() {};
+                    prevHunts = snapshot.getValue(t);
+                    createRecyclerView();
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(PreviousHuntsActivity.this, "Unable to fetch locations from database.", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(PreviousHuntsActivity.this, "Unable to fetch locations from database.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void createRecyclerView() {

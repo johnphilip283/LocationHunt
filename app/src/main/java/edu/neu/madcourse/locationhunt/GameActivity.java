@@ -45,6 +45,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView distFromDestText;
     private TextView hintText;
     private GameActivity curGame = this;
+    private double oldDist;
+    private int tracker = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +120,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void getLocationUpdates(GoogleMap gMap) {
         this.locationRequest = new LocationRequest();
-        this.locationRequest.setInterval(30000);
-        this.locationRequest.setFastestInterval(20000);
+        this.locationRequest.setInterval(20000);
+        this.locationRequest.setFastestInterval(10000);
         this.locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         this.locationCallback = new LocationCallback() {
@@ -139,6 +141,18 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Toast.makeText(curGame, "You found the destination!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(curGame, EndGameActivity.class);
                             startActivity(intent);
+                        }
+                        if (tracker == 0) {
+                            oldDist = distFromDest;
+                            tracker += 1;
+                        }
+                        if (tracker == 10) {
+                            if (distFromDest > oldDist) {
+                                Toast.makeText(curGame,
+                                        "You're going the wrong way! Try turning around.",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                            tracker = 0;
                         }
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                         gMap.addMarker(markerOptions);

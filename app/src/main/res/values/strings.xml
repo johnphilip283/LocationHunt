@@ -15,5 +15,6 @@
 
     <string name="location_card_hint">Hint: %1$s</string>
     <string name="location_card_distance">Distance: %1$.1f miles</string>
+    <string name="lets_go">Let\'s Go!</string>
 
 </resources>

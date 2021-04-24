@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -22,17 +23,29 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import edu.neu.madcourse.locationhunt.models.Constants;
+
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private MapView mapView;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
+    private double startLng;
+    private double startLat;
+    private String destinationName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        Intent intent = getIntent();
+
+        startLat = intent.getDoubleExtra("Latitude", Constants.DEFAULT_CURRENT_LAT);
+        startLng = intent.getDoubleExtra("Longitude", Constants.DEFAULT_CURRENT_LNG);
+        destinationName = intent.getStringExtra("Name");
+
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 

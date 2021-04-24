@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
         username = findViewById(R.id.login_username_field);
         password = findViewById(R.id.login_password_field);
-        userDb = FirebaseDatabase.getInstance().getReference();
+        userDb = FirebaseDatabase.getInstance("https://locationhunt-aa615-default-rtdb.firebaseio.com").getReference();
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(LoginActivity.this, token -> {
             this.clientToken = token;

@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LocationHunt">
-        <activity android:name=".GameActivity"></activity>
-        <activity android:name=".InitialStreetViewActivity" />
+        <activity android:name=".GameActivity"/>
+        <activity android:name=".LocationInfoActivity" />
+        <activity android:name=".LocationChoiceActivity" />
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".LoginActivity"

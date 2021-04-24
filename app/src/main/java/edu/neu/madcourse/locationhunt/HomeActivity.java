@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(this, InitialStreetViewActivity.class);
+            Intent intent = new Intent(this, LocationChoiceActivity.class);
             startActivity(intent);
         } else {
             requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission is granted
-                    Intent intent = new Intent(this, InitialStreetViewActivity.class);
+                    Intent intent = new Intent(this, LocationChoiceActivity.class);
                     startActivity(intent);
                 }  else {
                     // permission denied

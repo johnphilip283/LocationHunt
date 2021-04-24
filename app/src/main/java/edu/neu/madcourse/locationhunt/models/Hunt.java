@@ -7,6 +7,7 @@ public class Hunt {
     public long startTimestamp;
     public long duration;
     public HuntLocation destination;
+    public double score;
 
     public Hunt() {
 
@@ -35,6 +36,10 @@ public class Hunt {
     public void setStartTimestamp(long startTimestamp) {
         this.startTimestamp = startTimestamp;
     }
+
+    public double getScore() { return score; }
+
+    public void setScore(double score) { this.score = score; }
 
     @NonNull
     @Override

@@ -6,9 +6,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import edu.neu.madcourse.locationhunt.models.Constants;
 
 public class LocationService {
 
@@ -55,4 +58,14 @@ public class LocationService {
         return null;
     }
 
+    public static float distanceToCurLocation(Location location) {
+
+        Location loc = new Location("");
+        loc.setLatitude(Constants.DEFAULT_CURRENT_LAT);
+        loc.setLongitude(Constants.DEFAULT_CURRENT_LNG);
+
+        // distance in meters -> need to convert to miles within 1 decimal place
+        double distanceInMeters = loc.distanceTo(location);
+        return (float) Math.round(0.00621371 * distanceInMeters) / 10;
+    }
 }

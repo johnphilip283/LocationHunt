@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,9 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.neu.madcourse.locationhunt.models.Constants;
 import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
-public class InitialStreetViewActivity extends AppCompatActivity {
+public class LocationChoiceActivity extends AppCompatActivity {
 
     private SeekBar distanceSeekBar;
     private TextView distanceFilterText;
@@ -39,21 +38,21 @@ public class InitialStreetViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_initial_street_view);
+        setContentView(R.layout.activity_location_choice);
 
         locationDb = FirebaseDatabase.getInstance().getReference();
         locationDb.child("locations").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 GenericTypeIndicator<List<HuntLocation>> t = new GenericTypeIndicator<List<HuntLocation>>() {};
-                InitialStreetViewActivity.this.allLocations = snapshot.getValue(t);
-                InitialStreetViewActivity.this.locations = snapshot.getValue(t);
+                LocationChoiceActivity.this.allLocations = snapshot.getValue(t);
+                LocationChoiceActivity.this.locations = snapshot.getValue(t);
                 createRecyclerView();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(InitialStreetViewActivity.this, "Unable to fetch locations from database.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LocationChoiceActivity.this, "Unable to fetch locations from database.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -67,8 +66,8 @@ public class InitialStreetViewActivity extends AppCompatActivity {
                 distanceFilterText.setText(getString(R.string.distance_filter_text, progress + ""));
 
                 Location currentLocation = new Location("");
-                currentLocation.setLatitude(42.33035768454704);
-                currentLocation.setLongitude(-71.09758758572562);
+                currentLocation.setLatitude(Constants.DEFAULT_CURRENT_LAT);
+                currentLocation.setLongitude(Constants.DEFAULT_CURRENT_LNG);
 
                 double distance;
                 locations.clear();
@@ -79,6 +78,7 @@ public class InitialStreetViewActivity extends AppCompatActivity {
 
                     Location huntLocation = location.getLocation();
                     distance = huntLocation.distanceTo(currentLocation);
+
                     distance = (float) Math.round(0.00621371 * distance) / 10;
 
                     if (distance < progress) {
@@ -99,7 +99,6 @@ public class InitialStreetViewActivity extends AppCompatActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
-
         });
 
     }
@@ -111,13 +110,24 @@ public class InitialStreetViewActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         rviewAdapter = new RviewAdapter(locations, this);
+        LocationClickListener locationClickListener = new LocationClickListener() {
+            @Override
+            public void onLocationClick(HuntLocation location) {
+                Intent intent = new Intent(LocationChoiceActivity.this, LocationInfoActivity.class);
+
+                intent.putExtra("Latitude", location.getLatitude());
+                intent.putExtra("Longitude", location.getLongitude());
+                intent.putExtra("Hint", location.getHint());
+                intent.putExtra("Name", location.getName());
+
+                startActivity(intent);
+            }
+        };
+
+        rviewAdapter.setOnLinkClickListener(locationClickListener);
         recyclerView.setAdapter(rviewAdapter);
+
         recyclerView.setLayoutManager(rLayoutManager);
     }
 
-
-    public void startHunt(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
-    }
 }

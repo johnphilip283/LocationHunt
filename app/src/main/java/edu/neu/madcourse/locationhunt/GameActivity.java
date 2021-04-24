@@ -41,7 +41,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double curLat;
     private double distFromDest;
     private String destinationName;
+    private String hint;
     private TextView distFromDestText;
+    private TextView hintText;
     private GameActivity curGame = this;
 
     @Override
@@ -54,9 +56,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         destLat = intent.getDoubleExtra("Latitude", Constants.DEFAULT_CURRENT_LAT);
         destLng = intent.getDoubleExtra("Longitude", Constants.DEFAULT_CURRENT_LNG);
         destinationName = intent.getStringExtra("Name");
+        hint = intent.getStringExtra("Hint");
 
         mapView = findViewById(R.id.mapView);
         distFromDestText = findViewById(R.id.distance_from_dest_text);
+        hintText = findViewById(R.id.hint_text);
+        hintText.setText(new StringBuilder().append("Hint: ").append(hint).toString());
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);

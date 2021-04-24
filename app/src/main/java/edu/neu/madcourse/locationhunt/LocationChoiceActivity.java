@@ -25,6 +25,10 @@ import java.util.List;
 import edu.neu.madcourse.locationhunt.models.Constants;
 import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
+import static edu.neu.madcourse.locationhunt.models.Constants.DEFAULT_CURRENT_LAT;
+import static edu.neu.madcourse.locationhunt.models.Constants.DEFAULT_CURRENT_LNG;
+import static edu.neu.madcourse.locationhunt.models.Constants.MILES_PER_METER;
+
 public class LocationChoiceActivity extends AppCompatActivity {
 
     private SeekBar distanceSeekBar;
@@ -66,8 +70,8 @@ public class LocationChoiceActivity extends AppCompatActivity {
                 distanceFilterText.setText(getString(R.string.distance_filter_text, progress + ""));
 
                 Location currentLocation = new Location("");
-                currentLocation.setLatitude(Constants.DEFAULT_CURRENT_LAT);
-                currentLocation.setLongitude(Constants.DEFAULT_CURRENT_LNG);
+                currentLocation.setLatitude(DEFAULT_CURRENT_LAT);
+                currentLocation.setLongitude(DEFAULT_CURRENT_LNG);
 
                 double distance;
                 locations.clear();
@@ -79,7 +83,7 @@ public class LocationChoiceActivity extends AppCompatActivity {
                     Location huntLocation = location.getLocation();
                     distance = huntLocation.distanceTo(currentLocation);
 
-                    distance = (float) Math.round(0.00621371 * distance) / 10;
+                    distance = (float) Math.round(MILES_PER_METER * distance) / 10;
 
                     if (distance < progress) {
                         filteredLocations.add(location);

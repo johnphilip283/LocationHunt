@@ -13,7 +13,7 @@ import static edu.neu.madcourse.locationhunt.models.Constants.SCORE_DEPRECIATION
 
 public class Hunt {
 
-    public long startTimestamp;
+    public double startTimestamp;
     public long duration; // in seconds
     public HuntLocation destination;
     public double score;
@@ -22,11 +22,26 @@ public class Hunt {
 
     }
 
+    public Hunt(double startTimestamp, long duration, HuntLocation destination, double score) {
+        this.destination = destination;
+        this.startTimestamp = startTimestamp;
+        this.duration = duration;
+        this.score = score;
+    }
+
+    public Hunt(double startTimestamp, long duration, HuntLocation destination) {
+        this.destination = destination;
+        this.startTimestamp = startTimestamp;
+        this.duration = duration;
+        this.score = this.getScore();
+    }
+
+
     public long getDuration() {
         return duration;
     }
 
-    public long getStartTimestamp() {
+    public double getStartTimestamp() {
         return startTimestamp;
     }
 
@@ -46,12 +61,11 @@ public class Hunt {
         this.startTimestamp = startTimestamp;
     }
 
-    public double getScore() { return this.calculateScore(); }
+    public double getScore() { return calculateScore(this.destination, this.duration); }
 
-    public double calculateScore() {
+    public static double calculateScore(HuntLocation destination, double duration) {
 
-
-        float metersToDestination = LocationService.getDefaultLocation().distanceTo(destination.getLocation());
+        float metersToDestination = LocationService.getDefaultLocation().distanceTo(destination.retrieveLocation());
 
         double initialScore = INITIAL_POINTS_PER_MILE * MILES_PER_METER * metersToDestination;
         double expectedSeconds = AVG_WALKING_SPEED_SEC_PER_METER * metersToDestination;
@@ -67,10 +81,7 @@ public class Hunt {
             diffInSeconds -= MINUTES_PER_DEPRECIATION * 60;
         }
 
-        System.out.println("Final Score: " + initialScore);
-
         return (int) initialScore;
-
     }
 
     public void setScore(double score) { this.score = score; }

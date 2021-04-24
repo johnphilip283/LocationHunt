@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.widget.TextView;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -23,8 +26,19 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.neu.madcourse.locationhunt.models.Constants;
+import edu.neu.madcourse.locationhunt.models.Hunt;
+import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -36,14 +50,50 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double destLat;
     private double curLng;
     private double curLat;
+
+    private DatabaseReference huntRef;
+
     private double distFromDest;
     private String destinationName;
     private TextView distFromDestText;
+    List<Hunt> hunts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("Username", "");
+        huntRef = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("hunts");
+
+        huntRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    GenericTypeIndicator<List<Hunt>> t = new GenericTypeIndicator<List<Hunt>>() {};
+                    hunts = task.getResult().getValue(t);
+                    if (hunts == null) {
+                        hunts = new ArrayList<>();
+                    }
+//                    System.out.println("HUNTS: " + hunts.toString());
+//
+//                    double startTimestamp = 1619062378.673514;
+//                    long duration = 4000;
+//                    String hint = "Testing";
+//                    double latitude = 42.34942458737125;
+//                    double longitude = -71.07819823092626;
+//                    String name = "Boston Public Library";
+//
+//                    HuntLocation destination = new HuntLocation(hint, latitude, longitude, name);
+//
+//                    Hunt hunt = new Hunt(startTimestamp, duration, destination);
+//                    hunts.add(hunt);
+//
+//                    huntRef.setValue(hunts);
+                }
+            }
+        });
 
         Intent intent = getIntent();
 
@@ -105,6 +155,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    private void onHuntFinish() {
+
     }
 
     private void getLocationUpdates(GoogleMap gMap) {

@@ -61,7 +61,7 @@ public class HuntLocation {
         this.longitude = longitude;
     }
 
-    public Location getLocation() {
+    public Location retrieveLocation() {
         Location location = new Location("");
         location.setLatitude(this.latitude);
         location.setLongitude(this.longitude);

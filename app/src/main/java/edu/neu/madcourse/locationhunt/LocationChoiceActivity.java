@@ -77,7 +77,7 @@ public class LocationChoiceActivity extends AppCompatActivity {
 
                 for (HuntLocation location : allLocations) {
 
-                    Location huntLocation = location.getLocation();
+                    Location huntLocation = location.retrieveLocation();
                     distance = huntLocation.distanceTo(currentLocation);
 
                     distance = (float) Math.round(MILES_PER_METER * distance) / 10;

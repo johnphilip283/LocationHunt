@@ -2,14 +2,12 @@ package edu.neu.madcourse.locationhunt;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import edu.neu.madcourse.locationhunt.models.Constants;
 import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
 import static edu.neu.madcourse.locationhunt.models.Constants.MILES_PER_METER;
@@ -49,7 +47,7 @@ public class LocationRviewHolder extends RecyclerView.ViewHolder {
         // distance in meters -> need to convert to miles within 1 decimal place
         double distanceInMeters = 0;
         if (currentLocation != null) {
-            distanceInMeters = currentLocation.distanceTo(location.getLocation());
+            distanceInMeters = currentLocation.distanceTo(location.retrieveLocation());
         }
         float distanceInMiles = (float) Math.round(MILES_PER_METER * distanceInMeters) / 10;
 

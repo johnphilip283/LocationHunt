@@ -72,7 +72,10 @@ public class LocationService {
         Location loc = this.getCurrentLocation();
 
         // distance in meters -> need to convert to miles within 1 decimal place
-        double distanceInMeters = loc.distanceTo(location);
+        double distanceInMeters = 0;
+        if (loc != null && location != null) {
+            distanceInMeters = loc.distanceTo(location);
+        }
         return (float) Math.round(0.00621371 * distanceInMeters) / 10;
     }
 }

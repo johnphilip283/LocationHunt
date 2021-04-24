@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -31,9 +32,13 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    private double startLng;
-    private double startLat;
+    private double destLng;
+    private double destLat;
+    private double curLng;
+    private double curLat;
+    private double distFromDest;
     private String destinationName;
+    private TextView distFromDestText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +47,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Intent intent = getIntent();
 
-        startLat = intent.getDoubleExtra("Latitude", Constants.DEFAULT_CURRENT_LAT);
-        startLng = intent.getDoubleExtra("Longitude", Constants.DEFAULT_CURRENT_LNG);
+        destLat = intent.getDoubleExtra("Latitude", Constants.DEFAULT_CURRENT_LAT);
+        destLng = intent.getDoubleExtra("Longitude", Constants.DEFAULT_CURRENT_LNG);
         destinationName = intent.getStringExtra("Name");
 
         mapView = findViewById(R.id.mapView);
+        distFromDestText = findViewById(R.id.distance_from_dest_text);
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);
@@ -113,8 +119,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (!locationResult.getLocations().isEmpty()) {
                     Location location = locationResult.getLastLocation();
                     if (location != null) {
-                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        //TODO check if latLng matches close to destination latLng
+                        curLat = location.getLatitude();
+                        curLng = location.getLongitude();
+                        LatLng latLng = new LatLng(curLat, curLng);
+                        // check if latLng matches close to destination latLng
+                        distFromDest = distBtwnCoordinates(curLat, curLng, destLat, destLng, "M");
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                         gMap.addMarker(markerOptions);
                         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
@@ -122,6 +131,29 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         };
+    }
+
+    // Distance between two coordinates reference: https://dzone.com/articles/distance-calculation-using-3
+    private double distBtwnCoordinates(double lat1, double lon1, double lat2, double lon2, String unit) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(degToRad(lat1)) * Math.sin(degToRad(lat2)) + Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.cos(degToRad(theta));
+        dist = Math.acos(dist);
+        dist = radToDeg(dist);
+        dist = dist * 60 * 1.1515;
+        if (unit.equals("K")) {
+            dist = dist * 1.609344;
+        } else if (unit.equals("M")) {
+            dist = dist * 0.8684;
+        }
+        return (dist);
+    }
+
+    private double degToRad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double radToDeg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 
     private void startLocationUpdates() {

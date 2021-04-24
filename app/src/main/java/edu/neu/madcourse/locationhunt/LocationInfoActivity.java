@@ -42,8 +42,8 @@ public class LocationInfoActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         Intent curIntent = getIntent();
 
-        double lat = intent.getDoubleExtra("Latitude", Constants.DEFAULT_CURRENT_LAT);
-        double lng = intent.getDoubleExtra("Longitude",  Constants.DEFAULT_CURRENT_LNG);
+        double lat = intent.getDoubleExtra("Latitude", Constants.DEFAULT_DEST_LAT);
+        double lng = intent.getDoubleExtra("Longitude",  Constants.DEFAULT_DEST_LNG);
 
         intent.putExtra("Latitude", lat);
         intent.putExtra("Longitude", lng);

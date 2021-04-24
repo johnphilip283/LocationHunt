@@ -19,4 +19,5 @@
 
     <string name="past_hunts">Past Hunts</string>
     <string name="info_display">%1$s: %2$s</string>
+    <string name="distance_from_destination_string">Distance from destination:</string>
 </resources>

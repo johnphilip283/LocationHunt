@@ -3,6 +3,8 @@ package edu.neu.madcourse.locationhunt.models;
 public final class Constants {
     public static final double DEFAULT_CURRENT_LAT = 42.33035768454704;
     public static final double DEFAULT_CURRENT_LNG = -71.09758758572562;
+    public static final double DEFAULT_DEST_LAT = 42.34598673679057;
+    public static final double DEFAULT_DEST_LNG = -71.08186788996824;
 
     // average person walks at 3.5 miles per hour, which is this in seconds per meter
     public static final double AVG_WALKING_SPEED_SEC_PER_METER = 0.63912465487;

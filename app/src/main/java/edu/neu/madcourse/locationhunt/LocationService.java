@@ -60,15 +60,16 @@ public class LocationService {
 
     public static Location getDefaultLocation() {
         Location loc = new Location("");
+
         loc.setLatitude(Constants.DEFAULT_CURRENT_LAT);
         loc.setLongitude(Constants.DEFAULT_CURRENT_LNG);
 
         return loc;
     }
 
-    public static float distanceToCurLocation(Location location) {
+    public float distanceToCurLocation(Location location) {
 
-        Location loc = LocationService.getDefaultLocation();
+        Location loc = this.getCurrentLocation();
 
         // distance in meters -> need to convert to miles within 1 decimal place
         double distanceInMeters = loc.distanceTo(location);

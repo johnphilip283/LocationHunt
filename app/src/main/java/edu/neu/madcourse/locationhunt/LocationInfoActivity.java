@@ -32,7 +32,8 @@ public class LocationInfoActivity extends AppCompatActivity {
         dest.setLongitude(lng);
         dest.setLatitude(lat);
 
-        float distanceInMiles = LocationService.distanceToCurLocation(dest);
+        LocationService locationService = new LocationService(this);
+        float distanceInMiles = locationService.distanceToCurLocation(dest);
 
         distance.setText(getString(R.string.location_card_distance, distanceInMiles));
     }

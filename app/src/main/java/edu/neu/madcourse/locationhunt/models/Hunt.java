@@ -49,6 +49,8 @@ public class Hunt {
     public double getScore() { return this.calculateScore(); }
 
     public double calculateScore() {
+
+
         float metersToDestination = LocationService.getDefaultLocation().distanceTo(destination.getLocation());
 
         double initialScore = INITIAL_POINTS_PER_MILE * MILES_PER_METER * metersToDestination;

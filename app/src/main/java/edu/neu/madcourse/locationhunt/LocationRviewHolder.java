@@ -43,7 +43,8 @@ public class LocationRviewHolder extends RecyclerView.ViewHolder {
     public void setHuntLocation(HuntLocation location) {
         this.location = location;
 
-        Location currentLocation = LocationService.getDefaultLocation();
+        LocationService locationService = new LocationService(ctx);
+        Location currentLocation = locationService.getCurrentLocation();
 
         // distance in meters -> need to convert to miles within 1 decimal place
         double distanceInMeters = currentLocation.distanceTo(location.getLocation());

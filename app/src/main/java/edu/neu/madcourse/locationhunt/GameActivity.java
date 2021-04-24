@@ -64,6 +64,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double startTimestamp;
 
     List<Hunt> hunts;
+    private TextView hintText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +95,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         destLng = intent.getDoubleExtra("Longitude", Constants.DEFAULT_CURRENT_LNG);
         destinationName = intent.getStringExtra("Name");
         hint = intent.getStringExtra("Hint");
+
         mapView = findViewById(R.id.mapView);
         distFromDestText = findViewById(R.id.distance_from_dest_text);
+        hintText = findViewById(R.id.hint_text);
+        
+        hintText.setText(getString(R.string.info_display, "Hint", hint));
         mapView.onCreate(savedInstanceState);
 
         mapView.getMapAsync(this);

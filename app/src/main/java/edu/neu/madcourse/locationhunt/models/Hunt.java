@@ -14,7 +14,7 @@ import static edu.neu.madcourse.locationhunt.models.Constants.SCORE_DEPRECIATION
 public class Hunt {
 
     public double startTimestamp;
-    public long duration; // in seconds
+    public double duration; // in seconds
     public HuntLocation destination;
     public double score;
 
@@ -22,14 +22,14 @@ public class Hunt {
 
     }
 
-    public Hunt(double startTimestamp, long duration, HuntLocation destination, double score) {
+    public Hunt(double startTimestamp, double duration, HuntLocation destination, double score) {
         this.destination = destination;
         this.startTimestamp = startTimestamp;
         this.duration = duration;
         this.score = score;
     }
 
-    public Hunt(double startTimestamp, long duration, HuntLocation destination) {
+    public Hunt(double startTimestamp, double duration, HuntLocation destination) {
         this.destination = destination;
         this.startTimestamp = startTimestamp;
         this.duration = duration;
@@ -37,7 +37,7 @@ public class Hunt {
     }
 
 
-    public long getDuration() {
+    public double getDuration() {
         return duration;
     }
 
@@ -53,7 +53,7 @@ public class Hunt {
         this.destination = destination;
     }
 
-    public void setDuration(long duration) {
+    public void setDuration(double duration) {
         this.duration = duration;
     }
 

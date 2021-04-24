@@ -13,6 +13,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -33,8 +34,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.text.DecimalFormat;
 
 import edu.neu.madcourse.locationhunt.models.Constants;
 import edu.neu.madcourse.locationhunt.models.Hunt;
@@ -55,7 +59,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private double distFromDest;
     private String destinationName;
+    private String hint;
     private TextView distFromDestText;
+    private double startTimestamp;
+
     List<Hunt> hunts;
 
     @Override
@@ -65,6 +72,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         SharedPreferences sharedPreferences = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
         String username = sharedPreferences.getString("Username", "");
+        startTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
         huntRef = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("hunts");
 
         huntRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -76,21 +84,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (hunts == null) {
                         hunts = new ArrayList<>();
                     }
-//                    System.out.println("HUNTS: " + hunts.toString());
-//
-//                    double startTimestamp = 1619062378.673514;
-//                    long duration = 4000;
-//                    String hint = "Testing";
-//                    double latitude = 42.34942458737125;
-//                    double longitude = -71.07819823092626;
-//                    String name = "Boston Public Library";
-//
-//                    HuntLocation destination = new HuntLocation(hint, latitude, longitude, name);
-//
-//                    Hunt hunt = new Hunt(startTimestamp, duration, destination);
-//                    hunts.add(hunt);
-//
-//                    huntRef.setValue(hunts);
                 }
             }
         });
@@ -100,7 +93,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         destLat = intent.getDoubleExtra("Latitude", Constants.DEFAULT_CURRENT_LAT);
         destLng = intent.getDoubleExtra("Longitude", Constants.DEFAULT_CURRENT_LNG);
         destinationName = intent.getStringExtra("Name");
-
+        hint = intent.getStringExtra("Hint");
         mapView = findViewById(R.id.mapView);
         distFromDestText = findViewById(R.id.distance_from_dest_text);
         mapView.onCreate(savedInstanceState);
@@ -157,9 +150,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onLowMemory();
     }
 
-    private void onHuntFinish() {
-
-    }
 
     private void getLocationUpdates(GoogleMap gMap) {
         this.locationRequest = new LocationRequest();
@@ -178,6 +168,24 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         LatLng latLng = new LatLng(curLat, curLng);
                         // check if latLng matches close to destination latLng
                         distFromDest = distBtwnCoordinates(curLat, curLng, destLat, destLng, "M");
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        distFromDestText.setText("Distance from destination (miles):\n" + df.format(distFromDest));
+                        if (distFromDest < 0.01) {
+
+                            double endTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
+                            double duration = (endTimestamp - startTimestamp) / 1000;
+
+                            HuntLocation destination = new HuntLocation(hint, destLat, destLng, destinationName);
+
+                            Hunt hunt = new Hunt(startTimestamp, duration, destination);
+                            hunts.add(hunt);
+                            huntRef.setValue(hunts);
+
+                            Toast.makeText(GameActivity.this, "You found the destination!", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(GameActivity.this, EndGameActivity.class);
+                            startActivity(intent);
+                        }
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                         gMap.addMarker(markerOptions);
                         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));

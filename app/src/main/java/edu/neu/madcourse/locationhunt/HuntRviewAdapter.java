@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import edu.neu.madcourse.locationhunt.models.Hunt;
@@ -35,15 +38,15 @@ public class HuntRviewAdapter extends RecyclerView.Adapter<HuntRviewHolder> {
         Hunt prevHunt = hunts.get(position);
         HuntLocation destination = prevHunt.getDestination();
 
-        // TODO: convert timestamp to date string
-        String date = "";
-        // prevHunt.getStartTimestamp();
+        SimpleDateFormat sdfr = new SimpleDateFormat("MMM dd, yyyy");
+
+        Date date = new Date((long) prevHunt.getStartTimestamp() * 1000);
 
         String durationInMin = (int) prevHunt.getDuration() / 60 + "";
 
         holder.destinationName.setText(ctx.getString(R.string.info_display, "Destination Name", destination.getName()));
         holder.duration.setText(ctx.getString(R.string.info_display, "Time elapsed",  durationInMin + " minutes"));
-        holder.startDate.setText(ctx.getString(R.string.info_display, "Date", date));
+        holder.startDate.setText(ctx.getString(R.string.info_display, "Date", sdfr.format(date)));
         holder.score.setText(ctx.getString(R.string.info_display, "Score", prevHunt.getScore() + ""));
     }
 

@@ -55,7 +55,7 @@ public class LocationService {
             }
         }
 
-        return null;
+        return getDefaultLocation();
     }
 
     public static Location getDefaultLocation() {

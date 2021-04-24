@@ -1,8 +1,6 @@
 package edu.neu.madcourse.locationhunt;
 
 import android.content.Context;
-import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +12,13 @@ import java.util.List;
 
 import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
-public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
+public class LocationRviewAdapter extends RecyclerView.Adapter<LocationRviewHolder> {
 
     private final List<HuntLocation> locations;
     private final Context ctx;
     private LocationClickListener listener;
 
-    public RviewAdapter(List<HuntLocation> locations, Context ctx) {
+    public LocationRviewAdapter(List<HuntLocation> locations, Context ctx) {
         this.locations = locations;
         this.ctx = ctx;
     }
@@ -31,13 +29,13 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder> {
 
     @NonNull
     @Override
-    public RviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LocationRviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.location_card, parent, false);
-        return new RviewHolder(view, listener, ctx);
+        return new LocationRviewHolder(view, listener, ctx);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RviewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LocationRviewHolder holder, int position) {
         HuntLocation destinationLocation = locations.get(position);
         holder.setHuntLocation(destinationLocation);
     }

@@ -22,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.neu.madcourse.locationhunt.models.Constants;
 import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
 import static edu.neu.madcourse.locationhunt.models.Constants.DEFAULT_CURRENT_LAT;
@@ -37,7 +36,7 @@ public class LocationChoiceActivity extends AppCompatActivity {
     private List<HuntLocation> allLocations;
     private List<HuntLocation> locations;
     private RecyclerView recyclerView;
-    private RviewAdapter rviewAdapter;
+    private LocationRviewAdapter rviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +112,7 @@ public class LocationChoiceActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.location_recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        rviewAdapter = new RviewAdapter(locations, this);
+        rviewAdapter = new LocationRviewAdapter(locations, this);
         LocationClickListener locationClickListener = new LocationClickListener() {
             @Override
             public void onLocationClick(HuntLocation location) {

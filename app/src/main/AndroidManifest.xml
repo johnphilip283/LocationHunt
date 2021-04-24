@@ -18,6 +18,7 @@
         <activity android:name=".LocationInfoActivity" />
         <activity android:name=".LocationChoiceActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name="PreviousHuntsActivity"/>
         <activity
             android:name=".LoginActivity"
             android:parentActivityName=".MainActivity" />

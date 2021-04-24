@@ -12,9 +12,11 @@
     <string name="username">Username</string>
     <string name="greeting">Hello, %1$s!</string>
     <string name="distance_filter_text">Maximum distance: %1$s miles away</string>
-
+    <string name="view_past_hunts">View Past Hunts</string>
     <string name="location_card_hint">Hint: %1$s</string>
     <string name="location_card_distance">Distance: %1$.1f miles</string>
     <string name="lets_go">Let\'s Go!</string>
 
+    <string name="past_hunts">Past Hunts</string>
+    <string name="info_display">%1$s: %2$s</string>
 </resources>

@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
         username = findViewById(R.id.login_username_field);
         password = findViewById(R.id.login_password_field);
-        userDb = FirebaseDatabase.getInstance("https://locationhunt-aa615-default-rtdb.firebaseio.com").getReference();
+        userDb = FirebaseDatabase.getInstance().getReference();
 
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(LoginActivity.this, token -> {
             this.clientToken = token;
@@ -60,11 +60,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (!task.isSuccessful()) {
                     Log.e("Firebase", "Error getting data", task.getException());
                 } else {
-
                     User requestedUser = task.getResult().getValue(User.class);
 
-                    if (requestedUser.getPassword().equals(passwordTxt)) {
-                        SharedPreferences sharedPref = LoginActivity.this.getSharedPreferences("userDetails", Context.MODE_PRIVATE);
+                    if (requestedUser == null) {
+                        Toast.makeText(getApplicationContext(), "Unable to fetch requested user.", Toast.LENGTH_SHORT).show();
+                    } else if (requestedUser.getPassword().equals(passwordTxt)) {
+                        SharedPreferences sharedPref = getSharedPreferences("userDetails", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
 
                         editor.putString("Username", usernameTxt);

@@ -44,6 +44,12 @@ public class LocationRviewHolder extends RecyclerView.ViewHolder {
         LocationService locationService = new LocationService(ctx);
         Location currentLocation = locationService.getCurrentLocation();
 
+//        System.out.println("Current Latitude: " + currentLocation.getLatitude());
+//        System.out.println("Current Longitude: " + currentLocation.getLongitude());
+//
+//        System.out.println("Location Latitude: " + location.getLatitude());
+//        System.out.println("Location Longitude: " + location.getLongitude());
+
         // distance in meters -> need to convert to miles within 1 decimal place
         double distanceInMeters = 0;
         if (currentLocation != null) {

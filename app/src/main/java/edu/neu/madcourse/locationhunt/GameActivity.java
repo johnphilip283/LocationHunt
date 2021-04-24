@@ -11,6 +11,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.DecimalFormat;
 
 import edu.neu.madcourse.locationhunt.models.Constants;
 
@@ -39,6 +42,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double distFromDest;
     private String destinationName;
     private TextView distFromDestText;
+    private GameActivity curGame = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,13 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         LatLng latLng = new LatLng(curLat, curLng);
                         // check if latLng matches close to destination latLng
                         distFromDest = distBtwnCoordinates(curLat, curLng, destLat, destLng, "M");
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        distFromDestText.setText("Distance from destination (miles):\n" + df.format(distFromDest));
+                        if (distFromDest < 0.01) {
+                            Toast.makeText(curGame, "You found the destination!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(curGame, EndGameActivity.class);
+                            startActivity(intent);
+                        }
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                         gMap.addMarker(markerOptions);
                         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));

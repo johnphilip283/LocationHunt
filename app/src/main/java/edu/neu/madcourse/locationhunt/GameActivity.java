@@ -114,6 +114,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Location location = locationResult.getLastLocation();
                     if (location != null) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                        //TODO check if latLng matches close to destination latLng
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                         gMap.addMarker(markerOptions);
                         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));

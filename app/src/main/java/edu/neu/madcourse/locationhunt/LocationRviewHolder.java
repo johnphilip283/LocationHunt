@@ -47,7 +47,10 @@ public class LocationRviewHolder extends RecyclerView.ViewHolder {
         Location currentLocation = locationService.getCurrentLocation();
 
         // distance in meters -> need to convert to miles within 1 decimal place
-        double distanceInMeters = currentLocation.distanceTo(location.getLocation());
+        double distanceInMeters = 0;
+        if (currentLocation != null) {
+            distanceInMeters = currentLocation.distanceTo(location.getLocation());
+        }
         float distanceInMiles = (float) Math.round(MILES_PER_METER * distanceInMeters) / 10;
 
         this.hint.setText(ctx.getString(R.string.location_card_hint, location.getHint()));

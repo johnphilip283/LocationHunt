@@ -52,8 +52,10 @@ public class HomeActivity extends AppCompatActivity {
                 GenericTypeIndicator<List<Hunt>> t = new GenericTypeIndicator<List<Hunt>>() {};
                 hunts = snapshot.getValue(t);
                 int total = 0;
-                for (Hunt hunt: hunts) {
-                    total += hunt.getScore();
+                if (hunts != null) {
+                    for (Hunt hunt: hunts) {
+                        total += hunt.getScore();
+                    }
                 }
                 totalPoints.setText(getString(R.string.info_display, "Total Points", total + ""));
             }

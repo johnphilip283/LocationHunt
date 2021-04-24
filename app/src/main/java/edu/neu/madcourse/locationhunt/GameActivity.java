@@ -62,6 +62,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String hint;
     private TextView distFromDestText;
     private double startTimestamp;
+    private GameActivity curGame = this;
+    private double oldDist;
+    private int tracker = 0;
 
     List<Hunt> hunts;
     private TextView hintText;
@@ -99,7 +102,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView = findViewById(R.id.mapView);
         distFromDestText = findViewById(R.id.distance_from_dest_text);
         hintText = findViewById(R.id.hint_text);
-        
+
         hintText.setText(getString(R.string.info_display, "Hint", hint));
         mapView.onCreate(savedInstanceState);
 
@@ -158,8 +161,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void getLocationUpdates(GoogleMap gMap) {
         this.locationRequest = new LocationRequest();
-        this.locationRequest.setInterval(30000);
-        this.locationRequest.setFastestInterval(20000);
+        this.locationRequest.setInterval(20000);
+        this.locationRequest.setFastestInterval(10000);
         this.locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         this.locationCallback = new LocationCallback() {
@@ -190,6 +193,18 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             Intent intent = new Intent(GameActivity.this, EndGameActivity.class);
                             startActivity(intent);
+                        }
+                        if (tracker == 0) {
+                            oldDist = distFromDest;
+                            tracker += 1;
+                        }
+                        if (tracker == 10) {
+                            if (distFromDest > oldDist) {
+                                Toast.makeText(curGame,
+                                        "You're going the wrong way! Try turning around.",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                            tracker = 0;
                         }
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                         gMap.addMarker(markerOptions);

@@ -15,7 +15,6 @@ import android.os.PersistableBundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -45,6 +44,8 @@ import edu.neu.madcourse.locationhunt.models.Hunt;
 import edu.neu.madcourse.locationhunt.models.HuntLocation;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private static final String KEY_OF_INSTANCE = "KEY_OF_INSTANCE";
+    private static final String NUMBER_OF_ITEMS = "NUMBER_OF_ITEMS";
 
     private MapView mapView;
     private FusedLocationProviderClient fusedLocationClient;
@@ -65,6 +66,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GameActivity curGame = this;
     private double oldDist;
     private int tracker = 0;
+    private List<MarkerOptions> markerList = new ArrayList<MarkerOptions>();
 
     List<Hunt> hunts;
     private TextView hintText;
@@ -108,6 +110,56 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mapView.getMapAsync(this);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        init(savedInstanceState);
+    }
+
+    // Handling Orientation Changes on Android
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+
+        int size = markerList == null ? 0 : markerList.size();
+        outState.putInt(NUMBER_OF_ITEMS, size);
+        outState.putString("HINT", "Hint: " + hint);
+        DecimalFormat df = new DecimalFormat("#.##");
+        outState.putString("DIST", df.format(distFromDest));
+
+        // Need to generate unique key for each item
+        // This is only a possible way to do, please find your own way to generate the key
+        for (int i = 0; i < size; i++) {
+            // put latLng information into instance
+            outState.putDouble(KEY_OF_INSTANCE + i + "lat", markerList.get(i).getPosition().latitude);
+            outState.putDouble(KEY_OF_INSTANCE + i + "lng", markerList.get(i).getPosition().longitude);
+        }
+        super.onSaveInstanceState(outState);
+
+    }
+
+    private void init(Bundle savedInstanceState) {
+        initialItemData(savedInstanceState);
+    }
+
+    private void initialItemData(Bundle savedInstanceState) {
+        // Not the first time to open this Activity
+        if (savedInstanceState != null && savedInstanceState.containsKey(NUMBER_OF_ITEMS)) {
+            if (markerList == null || markerList.size() == 0) {
+
+                int size = savedInstanceState.getInt(NUMBER_OF_ITEMS);
+
+                // Retrieve keys we stored in the instance
+                for (int i = 0; i < size; i++) {
+                    String linkName = savedInstanceState.getString(KEY_OF_INSTANCE + i + "0");
+                    String url = savedInstanceState.getString(KEY_OF_INSTANCE + i + "1");
+
+                    //LinkItemCard itemCard = new LinkItemCard(linkName, url);
+
+                    //itemList.add(itemCard);
+                }
+            }
+        }
+        // The first time to open this Activity
+        else {
+            // empty list for now
+        }
     }
 
     @Override
@@ -197,6 +249,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (tracker == 0) {
                             oldDist = distFromDest;
                             tracker += 1;
+                        } else if (tracker < 10) {
+                            tracker += 1;
                         }
                         if (tracker == 10) {
                             if (distFromDest > oldDist) {
@@ -208,6 +262,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                         MarkerOptions markerOptions = new MarkerOptions().position(latLng);
                         gMap.addMarker(markerOptions);
+                        markerList.add(markerOptions);
                         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
                     }
                 }

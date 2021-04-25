@@ -27,4 +27,6 @@
     -->
     <string name="hello_world">Hello Square World!</string>
     <string name="hint">Hint:</string>
+    <string name="you_found_the_location_string">You found the location!</string>
+    <string name="return_home_string">RETURN HOME</string>
 </resources>

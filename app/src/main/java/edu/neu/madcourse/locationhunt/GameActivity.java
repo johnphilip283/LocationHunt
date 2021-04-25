@@ -229,7 +229,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         // check if latLng matches close to destination latLng
                         distFromDest = distBtwnCoordinates(curLat, curLng, destLat, destLng, "M");
                         DecimalFormat df = new DecimalFormat("#.##");
-                        distFromDestText.setText("Distance from destination (miles):\n" + df.format(distFromDest));
+                        distFromDestText.setText("Distance from location (miles):\n" + df.format(distFromDest));
                         if (distFromDest < 0.01) {
 
                             double endTimestamp = new Timestamp(System.currentTimeMillis()).getTime();
@@ -241,7 +241,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                             hunts.add(hunt);
                             huntRef.setValue(hunts);
 
-                            Toast.makeText(GameActivity.this, "You found the destination!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameActivity.this, "You found the location!", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(GameActivity.this, EndGameActivity.class);
                             startActivity(intent);
@@ -249,10 +249,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if (tracker == 0) {
                             oldDist = distFromDest;
                             tracker += 1;
-                        } else if (tracker < 10) {
+                        }
+                        if (tracker < 5 && tracker > 0) {
                             tracker += 1;
                         }
-                        if (tracker == 10) {
+                        if (tracker == 5) {
                             if (distFromDest > oldDist) {
                                 Toast.makeText(curGame,
                                         "You're going the wrong way! Try turning around.",
